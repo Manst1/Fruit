@@ -6,27 +6,69 @@
     <title>Fruits</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Dark mode styles */
+        body.dark .min-h-screen {
+            background-color: #1a202c;
+            background-image: none;
+        }
+        body.dark .bg-blue-600 {
+            background-color: #2b6cb0;
+        }
+        body.dark .text-white {
+            color: #e2e8f0;
+        }
+        body.dark .bg-gray-100 {
+            background-color: #2d3748;
+        }
+        body.dark .bg-white {
+            background-color: #2d3748;
+        }
+        body.dark .shadow-md {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        body.dark .text-gray-800 {
+            color: #e2e8f0;
+        }
+        body.dark .tab-active {
+            background-color: #3182ce;
+        }
+        body.dark .nav-container {
+            background-color: #2d3748;
+        }
+        body.dark .bg-blue-500 {
+            background-color: #3182ce;
+        }
+        body.dark .hover\:bg-blue-600:hover {
+            background-color: #2c5282;
+        }
+        body.dark .border-gray-300 {
+            border-color: #4a5568;
+        }
+        body.dark input {
+            background-color: #4a5568;
+            color: white;
+        }
+        body.dark .bg-gray-500 {
+            background-color: #4a5568;
+        }
+        body.dark .tab {
+            color: #e2e8f0;
+        }
+        body.dark .flashcard-mode-label {
+            color: #e2e8f0;
+        }
+
+        /* Make the toggle non-selectable */
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* Flashcard and other custom styles */
         html {
             overflow-y: scroll;
-        }
-        .pattern-container {
-            position: relative;
-        }
-        .pattern-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 50px;
-            height: 100%;
-            background-image: url('https://www.transparenttextures.com/patterns/diagonal-striped-brick.png');
-            background-repeat: repeat-y;
-            opacity: 0.3;
-            z-index: 0;
-        }
-        .content {
-            position: relative;
-            z-index: 1;
         }
         .tab-active {
             background-color: #2563eb;
@@ -89,43 +131,49 @@
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+        body.dark .flashcard-front, body.dark .flashcard-back {
+            background-color: #2d3748;
+        }
         .flashcard-back {
             transform: rotateY(180deg);
         }
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
-    <div class="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 flex flex-col pattern-container">
-        <header class="header-container bg-blue-600 text-white p-4 shadow-lg">
-            <div class="max-w-md mx-auto">
-                <h1 class="text-3xl font-bold text-center">Fruits - Muutes</h1>
+    <div class="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 flex flex-col">
+        <header class="header-container bg-blue-600 text-white p-4 shadow-lg flex justify-between items-center">
+            <div class="max-w-md mx-auto w-full text-center">
+                <h1 class="text-3xl font-bold">Fruits - Muutes</h1>
+            </div>
+            <div id="dark-mode-toggle" class="no-select absolute right-16 top-4 cursor-pointer text-white text-lg p-2 rounded-full hover:bg-blue-700 transition-colors duration-300">
+                ☀️
             </div>
         </header>
         <nav class="nav-container shadow-md p-2">
             <div class="flex justify-between max-w-md mx-auto">
-                <button id="overview-tab" class="tab-active px-4 py-2 text-sm font-semibold rounded hover:bg-blue-500 hover:text-white transition flex-1 text-center">Overview</button>
-                <button id="flashcards-tab" class="px-4 py-2 text-sm font-semibold rounded hover:bg-blue-500 hover:text-white transition flex-1 text-center">Flash Cards</button>
-                <button id="test-tab" class="px-4 py-2 text-sm font-semibold rounded hover:bg-blue-500 hover:text-white transition flex-1 text-center">Test Yourself</button>
+                <button id="overview-tab" class="tab tab-active px-4 py-2 text-sm font-semibold rounded hover:bg-blue-500 hover:text-white transition flex-1 text-center">Overview</button>
+                <button id="flashcards-tab" class="tab px-4 py-2 text-sm font-semibold rounded hover:bg-blue-500 hover:text-white transition flex-1 text-center">Flash Cards</button>
+                <button id="test-tab" class="tab px-4 py-2 text-sm font-semibold rounded hover:bg-blue-500 hover:text-white transition flex-1 text-center">Test Yourself</button>
             </div>
         </nav>
-        <main class="container mx-auto p-6 content flex-1">
+        <main class="container mx-auto p-6 flex-1">
             <section id="overview-section" class="grid grid-cols-1 gap-12 max-w-md mx-auto">
             </section>
             <section id="flashcards-section" class="hidden flex flex-col items-center max-w-md mx-auto">
                 <div class="mb-4">
                     <label class="inline-flex items-center mr-4">
                         <input type="radio" name="flashcard-mode" value="random" checked class="mr-2">
-                        <span>Random</span>
+                        <span class="flashcard-mode-label">Random</span>
                     </label>
                     <label class="inline-flex items-center">
                         <input type="radio" name="flashcard-mode" value="alphabetical" class="mr-2">
-                        <span>Alphabetical</span>
+                        <span class="flashcard-mode-label">Alphabetical</span>
                     </label>
                 </div>
                 <div class="flashcard" id="flashcard-container">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">
-                            <img id="flashcard-image" src="" alt="Clothing" class="w-48 h-48 object-cover rounded mb-4">
+                            <img id="flashcard-image" src="" alt="Animal" class="w-48 h-48 object-cover rounded mb-4">
                             <h2 class="text-xl font-semibold text-gray-800" id="flashcard-word"></h2>
                         </div>
                         <div class="flashcard-back">
@@ -137,7 +185,7 @@
             </section>
             <section id="test-section" class="hidden flex flex-col items-center max-w-md mx-auto">
                 <div class="bg-white rounded-lg shadow-md p-6 w-full">
-                    <img id="test-image" src="" alt="Clothing" class="w-48 h-48 object-cover rounded mb-4 mx-auto">
+                    <img id="test-image" src="" alt="Animal" class="w-48 h-48 object-cover rounded mb-4 mx-auto">
                     <input id="test-input" type="text" placeholder="Enter translation" class="border border-gray-300 rounded p-2 mb-4 w-full">
                     <div class="flex justify-between">
                         <button id="test-submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Submit</button>
@@ -152,7 +200,7 @@
         </main>
     </div>
     <script>
-                const animals = [
+        const animals = [
             { word: "Cherry", translation: "Scheri", image: "https://i.imgur.com/z4Yxbj6.png", link: "https://example.com/monkey" },
             { word: "Apple", translation: "Olmo", image: "https://i.imgur.com/fOOAupI.png", link: "https://example.com/dog" },
             { word: "Apricot", translation: "Lestö", image: "https://i.imgur.com/TIbpSym.png", link: "https://example.com/elephant" },
@@ -179,7 +227,6 @@
             { word: "Coconut", translation: "Knoss", image: "https://i.imgur.com/FHnXsQ0.png", link: "https://example.com/dog" },
             { word: "Avocado", translation: "Meelbo", image: "https://i.imgur.com/8M2LBoh.png", link: "https://example.com/elephant" },
             { word: "Date", translation: "Brischit", image: "https://i.imgur.com/KCQm37W.png", link: "https://example.com/lion" }
-
         ];
 
         // DOM elements
@@ -205,6 +252,10 @@
         const testFeedback = document.getElementById('test-feedback');
         const testProgress = document.getElementById('test-progress');
 
+        // Dark mode elements
+        const toggleButton = document.getElementById('dark-mode-toggle');
+        const body = document.body;
+
         // State variables
         let currentFlashcardIndex = 0;
         let recentlyTestedIndices = [];
@@ -214,6 +265,30 @@
         // Initialize the app
         function init() {
             animals.sort((a, b) => a.word.localeCompare(b.word));
+            
+            // Check for saved dark mode preference in local storage on page load
+            const currentMode = localStorage.getItem('theme');
+            if (currentMode === 'dark') {
+                body.classList.add('dark');
+                toggleButton.textContent = '🌙';
+            }
+
+            // Dark mode toggle event listener
+            if (toggleButton) {
+                toggleButton.addEventListener('click', () => {
+                    body.classList.toggle('dark');
+                    if (body.classList.contains('dark')) {
+                        toggleButton.textContent = '🌙';
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        toggleButton.textContent = '☀️';
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+            } else {
+                console.error('Dark mode toggle button not found');
+            }
+
             preloadImages().then(() => {
                 populateOverview();
                 setupFlashcards();
@@ -222,9 +297,12 @@
             });
             
             // Set up event listeners for tabs
-            overviewTab.addEventListener('click', () => showSection('overview-section'));
-            flashcardsTab.addEventListener('click', () => showSection('flashcards-section'));
-            testTab.addEventListener('click', () => showSection('test-section'));
+            if (overviewTab) overviewTab.addEventListener('click', () => showSection('overview-section'));
+            else console.error('Overview tab not found');
+            if (flashcardsTab) flashcardsTab.addEventListener('click', () => showSection('flashcards-section'));
+            else console.error('Flashcards tab not found');
+            if (testTab) testTab.addEventListener('click', () => showSection('test-section'));
+            else console.error('Test tab not found');
             
             // Set up event listeners for mode toggle
             document.querySelectorAll('input[name="flashcard-mode"]').forEach(radio => {
@@ -266,6 +344,10 @@
         
         // Populate the overview section
         function populateOverview() {
+            if (!overviewSection) {
+                console.error('Overview section not found');
+                return;
+            }
             overviewSection.innerHTML = '';
             animals.forEach(animal => {
                 const card = document.createElement('div');
@@ -287,6 +369,10 @@
         
         // Set up flashcards functionality
         function setupFlashcards() {
+            if (!flashcardContainer || !flashcardImage || !flashcardWord || !flashcardTranslation || !nextFlashcardBtn) {
+                console.error('One or more flashcard elements not found');
+                return;
+            }
             // Start with a random card or first card based on mode
             if (flashcardMode === 'random') {
                 currentFlashcardIndex = getRandomFlashcardIndex();
@@ -301,6 +387,10 @@
         }
         
         function showFlashcard() {
+            if (!flashcardContainer || !flashcardImage || !flashcardWord || !flashcardTranslation) {
+                console.error('One or more flashcard elements not found in showFlashcard');
+                return;
+            }
             const animal = animals[currentFlashcardIndex];
             flashcardImage.src = animal.image;
             flashcardWord.innerHTML = animal.word; // Use innerHTML to render <br>
@@ -309,6 +399,10 @@
         }
         
         function flipFlashcard() {
+            if (!flashcardContainer) {
+                console.error('Flashcard container not found in flipFlashcard');
+                return;
+            }
             flashcardContainer.classList.toggle('flipped');
         }
         
@@ -332,8 +426,16 @@
         }
         
         function nextFlashcard(event) {
+            if (!flashcardContainer) {
+                console.error('Flashcard container not found in nextFlashcard');
+                return;
+            }
             event.stopPropagation();
             const flashcardInner = flashcardContainer.querySelector('.flashcard-inner');
+            if (!flashcardInner) {
+                console.error('Flashcard inner element not found');
+                return;
+            }
             flashcardInner.style.transition = 'none';
             flashcardContainer.classList.remove('flipped');
             
@@ -353,6 +455,10 @@
         
         // Set up test functionality
         function setupTest() {
+            if (!testImage || !testInput || !testSubmit || !skipTestBtn || !testFeedback || !testProgress) {
+                console.error('One or more test elements not found');
+                return;
+            }
             recentlyTestedIndices = [];
             currentTestIndex = getRandomTestIndex();
             showTestQuestion();
@@ -360,11 +466,11 @@
             testSubmit.addEventListener('click', checkAnswer);
             skipTestBtn.addEventListener('click', skipQuestion);
             testInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault(); // Prevent form submission or other default behavior
-        checkAnswer();
-    }
-});
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent form submission or other default behavior
+                    checkAnswer();
+                }
+            });
         }
         
         function getRandomTestIndex() {
@@ -387,6 +493,10 @@
         }
         
         function showTestQuestion() {
+            if (!testImage || !testInput || !testFeedback || !testProgress) {
+                console.error('One or more test elements not found in showTestQuestion');
+                return;
+            }
             const animal = animals[currentTestIndex];
             testImage.src = animal.image;
             testInput.value = '';
@@ -396,32 +506,36 @@
         }
         
         function checkAnswer() {
-    // Prevent multiple submissions
-    if (testSubmit.disabled) return;
-    
-    const userInput = testInput.value.trim().toLowerCase();
-    const correctAnswer = animals[currentTestIndex].translation.toLowerCase();
-    
-    if (userInput === correctAnswer) {
-        testFeedback.textContent = 'Correct!';
-        testFeedback.className = 'text-lg mt-4 text-center text-green-600';
-        
-        // Disable the submit button temporarily
-        testSubmit.disabled = true;
-        skipTestBtn.disabled = true;
-        
-        setTimeout(() => {
-            currentTestIndex = getRandomTestIndex();
-            showTestQuestion();
-            testSubmit.disabled = false;
-            skipTestBtn.disabled = false;
-        }, 1000);
-    } else {
-        testFeedback.textContent = `Incorrect. The correct answer is "${animals[currentTestIndex].translation}".`;
-        testFeedback.className = 'text-lg mt-4 text-center text-red-600';
-        testInput.value = '';
-    }
-}
+            if (!testSubmit || !testInput || !testFeedback) {
+                console.error('One or more test elements not found in checkAnswer');
+                return;
+            }
+            // Prevent multiple submissions
+            if (testSubmit.disabled) return;
+            
+            const userInput = testInput.value.trim().toLowerCase();
+            const correctAnswer = animals[currentTestIndex].translation.toLowerCase();
+            
+            if (userInput === correctAnswer) {
+                testFeedback.textContent = 'Correct!';
+                testFeedback.className = 'text-lg mt-4 text-center text-green-600';
+                
+                // Disable the submit button temporarily
+                testSubmit.disabled = true;
+                skipTestBtn.disabled = true;
+                
+                setTimeout(() => {
+                    currentTestIndex = getRandomTestIndex();
+                    showTestQuestion();
+                    testSubmit.disabled = false;
+                    skipTestBtn.disabled = false;
+                }, 1000);
+            } else {
+                testFeedback.textContent = `Incorrect. The correct answer is "${animals[currentTestIndex].translation}".`;
+                testFeedback.className = 'text-lg mt-4 text-center text-red-600';
+                testInput.value = '';
+            }
+        }
         
         function skipQuestion() {
             currentTestIndex = getRandomTestIndex();
@@ -429,21 +543,56 @@
         }
         
         function updateTestProgress() {
+            if (!testProgress) {
+                console.error('Test progress element not found');
+                return;
+            }
             testProgress.textContent = `${animals.length} words in total`;
         }
         
         // Show/hide sections
         function showSection(sectionId) {
-            overviewSection.classList.add('hidden');
-            flashcardsSection.classList.add('hidden');
-            testSection.classList.add('hidden');
-            overviewTab.classList.remove('tab-active');
-            flashcardsTab.classList.remove('tab-active');
-            testTab.classList.remove('tab-active');
-            
-            document.getElementById(sectionId).classList.remove('hidden');
-            document.getElementById(`${sectionId}-tab`).classList.add('tab-active');
-            
+            const sections = {
+                'overview-section': overviewSection,
+                'flashcards-section': flashcardsSection,
+                'test-section': testSection
+            };
+            const tabs = {
+                'overview-section': overviewTab,
+                'flashcards-section': flashcardsTab,
+                'test-section': testTab
+            };
+
+            // Hide all sections and remove active class from tabs
+            for (const [id, section] of Object.entries(sections)) {
+                if (section) {
+                    section.classList.add('hidden');
+                } else {
+                    console.error(`Section with ID ${id} not found`);
+                }
+            }
+            for (const [id, tab] of Object.entries(tabs)) {
+                if (tab) {
+                    tab.classList.remove('tab-active');
+                } else {
+                    console.error(`Tab for ${id} not found`);
+                }
+            }
+
+            // Show the selected section and activate its tab
+            const targetSection = sections[sectionId];
+            const targetTab = tabs[sectionId];
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            } else {
+                console.error(`Target section ${sectionId} not found`);
+            }
+            if (targetTab) {
+                targetTab.classList.add('tab-active');
+            } else {
+                console.error(`Target tab for ${sectionId} not found`);
+            }
+
             if (sectionId === 'flashcards-section') {
                 if (flashcardMode === 'random') {
                     currentFlashcardIndex = getRandomFlashcardIndex();
@@ -460,5 +609,4 @@
         window.onload = init;
     </script>
 </body>
-
 </html>
